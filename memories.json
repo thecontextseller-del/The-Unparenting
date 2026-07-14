@@ -1,0 +1,35 @@
+{
+  "_readme": "Add a memory = add one object below. Fields: src, title, location, feeling (a short one-line memory), date (optional e.g. 'Winter 2025'), category. src is a path inside /media (use ../name.jpg for files in /media, or a bare name for files in /media/us). Portrait, landscape and videos all work. No duplicates needed.",
+  "memories": [
+    { "src": "./house-hero.jpeg", "title": "The House Among Deodars", "location": "Haripur", "feeling": "Where the day begins slowly.", "category": "nature" },
+    { "src": "./house.jpeg", "title": "Soyal Mansion", "location": "Haripur, Manali", "feeling": "Home, not a hotel.", "category": "nature" },
+    { "src": "./house-snow.jpeg", "title": "First Snow", "location": "Haripur", "feeling": "Quiet enough to hear it fall.", "category": "nature" },
+    { "src": "./mom-baby-roses.jpeg", "title": "Wild Roses", "location": "The garden", "feeling": "Slower than yesterday.", "category": "nature" },
+
+    { "src": "./family.jpeg", "title": "A Village Walk", "location": "Haripur", "feeling": "The three of us, unhurried.", "category": "family" },
+    { "src": "./dad-baby.jpeg", "title": "First Mornings", "location": "The orchards", "feeling": "Carrying her into the light.", "category": "family" },
+    { "src": "./vriti.jpeg", "title": "Vriti", "location": "At home", "feeling": "Learning alongside her.", "category": "family" },
+    { "src": "./vishal.jpeg", "title": "Vishal", "location": "At home", "feeling": "Always questioning.", "category": "family" },
+
+    { "src": "./baithak.jpeg", "title": "The Baithak", "location": "Ground floor", "feeling": "Where conversations stay long.", "category": "moments" },
+    { "src": "./interior-stairs.jpeg", "title": "Deodar Staircase", "location": "Soyal Mansion", "feeling": "Wood that remembers.", "category": "moments" },
+    { "src": "./sauna.jpeg", "title": "Riverside Sauna", "location": "By the water", "feeling": "Warm, then mountain air.", "category": "moments" },
+    { "src": "./room.jpeg", "title": "A Private Room", "location": "Upstairs", "feeling": "Valley light in the morning.", "category": "moments" },
+    { "src": "./room2.jpeg", "title": "Valley Light", "location": "Upstairs", "feeling": "Nothing to rush toward.", "category": "moments" },
+    { "src": "./room-attic.jpeg", "title": "The Attic Room", "location": "Under the eaves", "feeling": "Small and safe.", "category": "moments" },
+
+    { "src": "./vishal-cap.jpeg", "title": "The Himachali Cap", "location": "Above the terraces", "feeling": "This place slowly becomes you.", "category": "family" },
+    { "src": "./room-wooden.jpeg", "title": "The Wooden Room", "location": "Soyal Mansion", "feeling": "Warm even before the lights.", "category": "moments" },
+    { "src": "./room-red-curtains.jpeg", "title": "Red Curtains", "location": "Upstairs", "feeling": "Wake up to the orchard.", "category": "moments" },
+    { "src": "./room-valley-window.jpeg", "title": "Two Windows", "location": "Valley side", "feeling": "The view does the talking.", "category": "nature" },
+    { "src": "./kitchen.jpeg", "title": "The Kitchen", "location": "Ground floor", "feeling": "Chai on the stove, always.", "category": "moments" },
+
+    { "src": "./dad-baby-home.jpeg", "title": "Home, Held Close", "location": "The front garden", "feeling": "Everything that matters, in two arms.", "category": "family" },
+    { "src": "./family-selfie-house.jpeg", "title": "The Three of Us", "location": "At the door", "feeling": "Where this story lives.", "category": "family" },
+    { "src": "./riverside-cafe-friends.jpeg", "title": "Riverside Table", "location": "A cafe by the rocks", "feeling": "Strangers become friends here.", "category": "family" },
+    { "src": "./workation-cafe.jpeg", "title": "Office for the Day", "location": "Under an apple tree", "feeling": "Work, with better air.", "category": "moments" },
+    { "src": "./baby-hand.jpeg", "title": "A Tiny Hand", "location": "Wrapped up warm", "feeling": "The whole reason, right here.", "category": "moments" },
+    { "src": "./baby-sleeping.jpeg", "title": "Mountain Naps", "location": "Deep asleep", "feeling": "The kind of sleep cities forget.", "category": "moments" },
+    { "src": "./thinking-room.jpeg", "title": "A Quiet Moment", "location": "An unhurried evening", "feeling": "Time to just sit and think.", "category": "moments" }
+  ]
+}
