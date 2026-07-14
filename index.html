@@ -18,6 +18,7 @@
     ::selection { background: #dfe8dd; }
     @keyframes floatpulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
     @keyframes titleflow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes sheen { 0% { left: -30%; } 6% { left: 112%; } 100% { left: 112%; } }
     @keyframes titlebreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
     @keyframes undetach { 0% { transform: translateY(-90px) rotateX(70deg) scale(1.15); opacity: 0; } 6% { transform: translateY(8px) rotateX(-12deg) scale(1.02); opacity: 1; } 9% { transform: translateY(-4px) rotateX(6deg); } 12% { transform: translateY(1px) rotateX(-2deg); } 15%, 82% { transform: translateY(0) rotateX(0deg); opacity: 1; } 88% { transform: translateY(-14px) rotateX(24deg); opacity: 0.5; } 94% { transform: translateY(-60px) rotateX(55deg); opacity: 0; } 100% { transform: translateY(-90px) rotateX(70deg) scale(1.15); opacity: 0; } }
     details summary::-webkit-details-marker { display: none; }
@@ -45,7 +46,7 @@
     <!-- subtle moving light -->
     <div id="hero-light" style="position: absolute; inset: -20%; z-index: 0; pointer-events: none; background: radial-gradient(38% 38% at 50% 42%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 60%); mix-blend-mode: screen;"></div>
     <!-- Orbit stage -->
-    <div id="ring-stage" style="position: absolute; inset: 0; z-index: 1; touch-action: pan-y; cursor: grab;">
+    <div id="ring-stage" style="position: absolute; inset: 0; z-index: 1; touch-action: pan-y; cursor: grab; opacity: 0; transition: opacity .9s ease;">
       <div id="ring-scene" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0;">
         <div id="orbit-outer" style="position: absolute;"></div>
         <div id="orbit-middle" style="position: absolute;"></div>
@@ -55,9 +56,15 @@
     <!-- natural vignette -->
     <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(75% 75% at 50% 50%, rgba(255,255,255,0) 62%, rgba(244,240,232,0.4) 100%);"></div>
 
-    <!-- The single title — centered inside the ring -->
-    <div style="position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; pointer-events: none; animation: titlebreathe 8s ease-in-out infinite;">
-      <h1 id="hero-title" data-reveal="" style="margin: 0; padding: 0 12px; max-width: 88vw; font-size: clamp(22px, min(5.8vw, 7.5vh), 62px); line-height: 0.94; letter-spacing: 0.05em; font-weight: 700; text-align: center; will-change: transform; perspective: 520px; transform-style: preserve-3d;"><span id="hero-un" style="display: inline-block; background: linear-gradient(110deg, #2e5339 0%, #57683f 40%, #8a5a33 80%, #2e5339 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #2e5339; animation: titleflow 9s ease-in-out infinite, undetach 12s ease-in-out infinite; will-change: transform, opacity;">UN</span><span style="display: inline-block; background: linear-gradient(110deg, #57683f 0%, #8a5a33 40%, #35322c 75%, #57683f 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #35322c; animation: titleflow 9s ease-in-out infinite;">PARENTING</span></h1>
+    <!-- The logo — intro at center, then docks above the ring -->
+    <div id="logo-wrap" style="position: absolute; left: 50%; top: 0; z-index: 3; pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 14px; will-change: transform, opacity; transform: translate(-50%, 40vh) scale(1.3); opacity: 0;">
+      <div id="hero-tilt" style="position: relative; width: min(58vw, 520px); will-change: transform;">
+        <img id="hero-logo-blur" src="./logo.png" alt="" style="width: 100%; display: block; filter: blur(12px); opacity: 0.35;">
+        <img id="hero-logo" src="./logo.png" alt="UNPARENTING" style="position: absolute; inset: 0; width: 100%; display: block; clip-path: inset(0 100% 0 0);">
+        <div id="glass-pane" style="position: absolute; top: -18%; bottom: -18%; left: -16%; width: 15%; opacity: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);"></div>
+        <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none;"><div style="position: absolute; top: 0; bottom: 0; left: -30%; width: 18%; background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%); animation: sheen 20s linear 8s infinite;"></div></div>
+      </div>
+      <p id="hero-tagline" style="margin: 0; font-size: clamp(10px, 2.4vw, 14px); letter-spacing: 0.42em; color: #7a7264; font-weight: 600; text-align: center; opacity: 0; transition: opacity .8s ease;">RAISING A FAMILY. DIFFERENTLY.</p>
     </div>
 
     <!-- Hover tooltip: title + location only -->
@@ -567,6 +574,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    this.runLogoIntro();
     this.initRing();
     // Gentle reveal-on-scroll
     const els = Array.from(document.querySelectorAll('[data-reveal]'));
@@ -735,6 +743,92 @@ class Component extends DCLogic {
 
   isMobile() { return window.matchMedia('(max-width: 720px)').matches; }
 
+  // === LOGO INTRO: glass-wipe reveal center-screen, then dock above the ring ===
+  runLogoIntro() {
+    const wrap = document.getElementById('logo-wrap');
+    const tilt = document.getElementById('hero-tilt');
+    const sharp = document.getElementById('hero-logo');
+    const blur = document.getElementById('hero-logo-blur');
+    const pane = document.getElementById('glass-pane');
+    const tag = document.getElementById('hero-tagline');
+    const stage = document.getElementById('ring-stage');
+    if (!wrap || !stage) return;
+    const mobile = this.isMobile();
+    tilt.style.width = mobile ? 'min(56vw, 230px)' : 'min(30vw, 320px)';
+    const H = window.innerHeight;
+    // recomputes centre from the CURRENT viewport (fullscreen, rotate, resize)
+    const dockY = () => {
+      const m = this.isMobile();
+      const lw = m ? Math.min(window.innerWidth * 0.56, 230) : Math.min(window.innerWidth * 0.30, 320);
+      return window.innerHeight * 0.5 - (lw / 8.76 + 34) * 0.5;
+    };
+    const dockTop = dockY();
+    this._redock = () => { if (done) wrap.style.transform = 'translate(-50%, ' + dockY() + 'px) scale(1)'; };
+    window.addEventListener('resize', this._redock);
+    let done = false;
+    const finalize = () => {
+      if (done) return; done = true;
+      wrap.style.transition = 'transform .3s ease, opacity .3s ease';
+      wrap.style.opacity = '1';
+      wrap.style.transform = 'translate(-50%, ' + dockTop + 'px) scale(1)';
+      sharp.style.clipPath = 'inset(0 0 0 0)';
+      blur.style.opacity = '0';
+      pane.style.opacity = '0';
+      tag.style.opacity = '1';
+      stage.style.opacity = '1';
+      if (this._ringReshuffle) this._ringReshuffle();
+      window.removeEventListener('pointerdown', finalize);
+      window.removeEventListener('wheel', finalize);
+      window.removeEventListener('touchmove', finalize);
+    };
+    this._introFinalize = finalize;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finalize(); return; }
+    window.addEventListener('pointerdown', finalize, { once: true });
+    window.addEventListener('wheel', finalize, { once: true, passive: true });
+    window.addEventListener('touchmove', finalize, { once: true, passive: true });
+    wrap.style.transform = 'translate(-50%, ' + (H * 0.40) + 'px) scale(1.9)'; // intro: big at center
+    let t0 = null; // based on FIRST rAF tick so a late start can't skip the timeline
+    const ease = (p) => 1 - Math.pow(1 - p, 3);
+    const step = (now) => {
+      if (done) return;
+      if (t0 === null) t0 = now;
+      const t = now - t0;
+      if (t < 220) { // fade in at center
+        wrap.style.opacity = String(t / 220);
+      } else if (t < 1450) { // glass wipe
+        wrap.style.opacity = '1';
+        pane.style.opacity = '1';
+        const p = ease((t - 220) / 1230);
+        pane.style.left = (-16 + p * 128) + '%';
+        sharp.style.clipPath = 'inset(0 ' + ((1 - p) * 100) + '% 0 0)';
+      } else if (t < 1500) {
+        pane.style.opacity = '0';
+        blur.style.opacity = '0';
+        sharp.style.clipPath = 'inset(0 0 0 0)';
+        if (tag.style.opacity !== '1') tag.style.opacity = '1';
+      } else if (t < 1850) {
+        // held frame
+      } else { // release: dock + ring fly-in on same curve (fully self-sufficient)
+        wrap.style.transition = 'transform .85s cubic-bezier(.22,1,.36,1)';
+        wrap.style.opacity = '1';
+        wrap.style.transform = 'translate(-50%, ' + dockTop + 'px) scale(1)';
+        sharp.style.clipPath = 'inset(0 0 0 0)';
+        blur.style.opacity = '0';
+        pane.style.opacity = '0';
+        tag.style.opacity = '1';
+        stage.style.opacity = '1';
+        if (this._ringReshuffle) this._ringReshuffle();
+        done = true;
+        window.removeEventListener('pointerdown', finalize);
+        window.removeEventListener('wheel', finalize);
+        window.removeEventListener('touchmove', finalize);
+        return;
+      }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   async initRing() {
     const stage = document.getElementById('ring-stage');
     const scene = document.getElementById('ring-scene');
@@ -857,6 +951,7 @@ class Component extends DCLogic {
       introStart = performance.now();
       lastShuffle = introStart;
     };
+    this._ringReshuffle = reshuffle;
     const introP = (c) => {
       const el = (performance.now() - introStart - c._delay) / INTRO_MS;
       const p = Math.min(1, Math.max(0, el));
@@ -911,7 +1006,7 @@ class Component extends DCLogic {
         if (!hoverStage && !paused && performance.now() - lastShuffle > SHUFFLE_MS) reshuffle();
       }
       // ring-reactive title: tilts gently against the ring's motion
-      const titleEl = document.getElementById('hero-title');
+      const titleEl = document.getElementById('hero-tilt');
       if (titleEl) {
         const target = Math.max(-6, Math.min(6, dragVel * -2600));
         titleTilt += (target - titleTilt) * 0.08;
