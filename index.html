@@ -754,6 +754,10 @@ class Component extends DCLogic {
     const stage = document.getElementById('ring-stage');
     if (!wrap || !stage) return;
     const mobile = this.isMobile();
+    // graceful fallback: if logo.png is missing, render the word in type instead of vanishing
+    sharp.addEventListener('error', () => {
+      tilt.innerHTML = '<div style="font-weight:700;font-size:clamp(26px,5vw,54px);letter-spacing:0.05em;color:#2e5339;text-align:center;line-height:1;">UNPARENTING</div>';
+    }, { once: true });
     tilt.style.width = mobile ? 'min(56vw, 230px)' : 'min(30vw, 320px)';
     const H = window.innerHeight;
     // recomputes centre from the CURRENT viewport (fullscreen, rotate, resize)
