@@ -486,12 +486,13 @@
         <p data-reveal="" style="margin: 0; font-size: 14px; letter-spacing: 0.22em; color: #c9c1b0;">TWO FAMILIES AT A TIME.</p>
       </div>
     </div>
-    <footer style="background: #201e1d; color: #a9a193; padding: 32px 24px; font-size: 13px;">
-      
-    <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;">
-        <span style="letter-spacing: 0.2em; font-weight: 700; color: #f6f1e8; width: 142px; height: 21px">UNPARENTING</span>
-        
-        <a href="https://www.instagram.com/unparenting.daily/" target="_blank" rel="noopener" style="color: #a8c3ae;">Follow our journey → @unparenting.daily</a><a href="{{ waHref }}" target="_blank" rel="noopener" style="color: #a8c3ae;">WhatsApp us</a>
+    <footer style="background: #201e1d; color: #a9a193; padding: 40px 24px; font-size: 14px;">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+        <span style="letter-spacing: 0.2em; font-weight: 700; color: #f6f1e8;">UNPARENTING</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px;">
+          <a href="https://www.instagram.com/unparenting.daily/" target="_blank" rel="noopener" style="color: #a8c3ae;" style-hover="color: #f6f1e8;">Follow our journey → @unparenting.daily</a>
+          <a href="{{ waHref }}" target="_blank" rel="noopener" style="color: #a8c3ae;" style-hover="color: #f6f1e8;">WhatsApp us</a>
+        </div>
       </div></footer>
   </section>
 
@@ -762,11 +763,15 @@ class Component extends DCLogic {
 
     const mobile = this.isMobile();
     const W = window.innerWidth;
-    // one circular (tilted) ring holding every memory
-    const outerRx = mobile ? Math.min(W * 0.46, 360) : Math.min(W * 0.42, 680);
-    const flat = 0.5; // ry/rx — tilted circle, reads as a ring not a strip
+    const H = window.innerHeight;
+    // one circular (tilted) ring holding every memory — sized to FIT the viewport on any screen
+    const cardWv = mobile ? Math.min(84, W * 0.2) : Math.min(122, W * 0.09);
+    const cardHv = Math.round(cardWv * 1.33);
+    const maxRy = (H - cardHv - (mobile ? 150 : 190)) / 2; // keep top+bottom arcs fully on screen
+    const outerRx = Math.min(mobile ? W * 0.44 : W * 0.42, mobile ? 360 : 680, maxRy / 0.5 * 1.15);
+    const flat = Math.min(0.5, Math.max(0.34, maxRy / outerRx));
     const orbits = [
-      { el: document.getElementById('orbit-outer'), rx: outerRx, speed: 0.0016, cardW: mobile ? 84 : 122, cardH: mobile ? 112 : 162 },
+      { el: document.getElementById('orbit-outer'), rx: outerRx, speed: 0.0016, cardW: cardWv, cardH: cardHv },
     ];
     // funnel every memory into the single ring
     buckets[0] = all.slice();
