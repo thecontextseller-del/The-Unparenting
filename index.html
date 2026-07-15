@@ -857,16 +857,17 @@ class Component extends DCLogic {
     const W = window.innerWidth;
     const H = window.innerHeight;
     // one circular (tilted) ring holding every memory — sized to FIT the viewport on any screen
-    const cardWv = mobile ? Math.min(96, W * 0.235) : Math.min(122, W * 0.09);
+    const cardWv = mobile ? Math.min(74, W * 0.19) : Math.min(122, W * 0.09);
     const cardHv = Math.round(cardWv * 1.33);
-    const maxRy = (H - cardHv - (mobile ? 130 : 190)) / 2; // keep top+bottom arcs fully on screen
-    const outerRx = Math.min(mobile ? W * 0.40 : W * 0.40, mobile ? 330 : 640, maxRy / 0.5 * 1.15);
-    const flat = Math.min(0.5, Math.max(0.34, maxRy / outerRx));
+    const maxRy = (H - cardHv - (mobile ? 170 : 190)) / 2; // keep top+bottom arcs fully on screen
+    // phones: tall portrait ellipse (uses vertical space, keeps centre clear for the logo)
+    const outerRx = mobile ? Math.max(120, (W - cardWv) / 2 - 10) : Math.min(W * 0.40, 640, maxRy / 0.5 * 1.15);
+    const flat = mobile ? Math.min(2.4, Math.max(1.1, maxRy / outerRx)) : Math.min(0.5, Math.max(0.34, maxRy / outerRx));
     const orbits = [
       { el: document.getElementById('orbit-outer'), rx: outerRx, speed: 0.0016, cardW: cardWv, cardH: cardHv },
     ];
-    // funnel every memory into the single ring
-    buckets[0] = all.slice();
+    // funnel every memory into the single ring (phones: fewer cards, no clutter)
+    buckets[0] = this.isMobile() ? all.slice(0, 16) : all.slice();
     buckets[1] = [];
     buckets[2] = [];
 
